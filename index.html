@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>САМО В БЪЛГАРИЯ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=IBM+Plex+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0E1B;
+  --surface: #141929;
+  --surface2: #1C2336;
+  --paper: #F5F0E8;
+  --paper-dark: #EDE5D8;
+  --red: #C0392B;
+  --green: #1A6B3C;
+  --gold: #C9973A;
+  --gold-light: #E8B954;
+  --white: #FFFFFF;
+  --grey: #555E6E;
+  --grey-light: #8899AA;
+  --text-ink: #1A1A18;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--white);font-family:'IBM Plex Mono',monospace;font-size:18px;}
+
+/* SCREEN SYSTEM */
+.screen{position:fixed;inset:0;display:none;flex-direction:column;opacity:0;transition:opacity .3s ease;overflow-y:auto;}
+.screen.active{display:flex;opacity:1;}
+.paper-screen{background:var(--paper);color:var(--text-ink);}
+.dark-screen{background:var(--bg);color:var(--white);}
+
+/* TEAM BANNER */
+.team-banner{background:var(--gold);color:var(--bg);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:20px;letter-spacing:.1em;text-transform:uppercase;padding:14px 40px;flex-shrink:0;animation:bannerSlide .25s ease;}
+@keyframes bannerSlide{from{transform:translateY(-100%);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+/* ROUND INTRO */
+.round-intro{align-items:center;justify-content:center;text-align:center;padding:60px 80px;gap:28px;}
+.round-number{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:14px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:6px 18px;display:inline-block;}
+.round-title{font-family:'Playfair Display',serif;font-weight:900;font-size:72px;line-height:1.05;color:var(--white);}
+.round-rules{font-family:'IBM Plex Mono',monospace;font-size:20px;line-height:2;color:var(--grey-light);max-width:640px;text-align:left;}
+.round-rules li{list-style:none;padding:2px 0;}
+.round-rules li::before{content:"— ";color:var(--gold);}
+
+/* PLAY SCREENS */
+.play-screen{align-items:center;padding:0 0 40px;gap:0;}
+.play-content{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 60px;gap:24px;width:100%;max-width:900px;margin:0 auto;}
+
+/* CARDS */
+.card{background:var(--surface);border:2px solid var(--grey);border-radius:4px;overflow:hidden;transition:border-color .15s,background .2s;position:relative;}
+.card:hover{border-color:var(--gold);}
+.card-bar{height:4px;width:100%;flex-shrink:0;}
+.card-body{padding:28px 32px;}
+
+/* ROUND 1 CARD */
+.r1-card{width:100%;max-width:720px;text-align:center;}
+.r1-card .card-body{padding:44px 60px;}
+.r1-card-num{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:14px;}
+.r1-verdict{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.2em;text-transform:uppercase;margin-bottom:8px;display:none;color:rgba(255,255,255,.7);}
+.r1-card-name{font-family:'Playfair Display',serif;font-weight:700;font-size:52px;line-height:1.1;color:var(--white);}
+.r1-card-explanation{font-family:'IBM Plex Mono',monospace;font-size:17px;line-height:1.7;color:var(--grey-light);margin-top:20px;display:none;}
+.r1-card.revealed-real{background:var(--green);border-color:var(--green);}
+.r1-card.revealed-real .r1-card-name,.r1-card.revealed-real .r1-verdict,.r1-card.revealed-real .r1-card-explanation{color:#fff;}
+.r1-card.revealed-real .r1-card-explanation,.r1-card.revealed-real .r1-verdict{display:block;}
+.r1-card.revealed-fake{background:var(--red);border-color:var(--red);}
+.r1-card.revealed-fake .r1-card-name,.r1-card.revealed-fake .r1-verdict,.r1-card.revealed-fake .r1-card-explanation{color:#fff;}
+.r1-card.revealed-fake .r1-card-explanation,.r1-card.revealed-fake .r1-verdict{display:block;}
+
+/* ANSWER BUTTONS */
+.answer-btns{display:flex;gap:20px;width:100%;max-width:720px;}
+.answer-btns button{flex:1;padding:18px;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:20px;letter-spacing:.08em;text-transform:uppercase;border-radius:4px;cursor:pointer;transition:background .15s,color .15s,transform .1s;border:2px solid;}
+.btn-real{background:transparent;border-color:var(--green);color:var(--green);}
+.btn-real:hover{background:var(--green);color:#fff;}
+.btn-fake{background:transparent;border-color:var(--red);color:var(--red);}
+.btn-fake:hover{background:var(--red);color:#fff;}
+.btn-real:active,.btn-fake:active{transform:scale(.97);}
+
+/* ROUND 2 CARD */
+.r2-card{width:100%;max-width:820px;}
+.r2-politician{font-family:'Playfair Display',serif;font-weight:700;font-size:40px;color:var(--white);margin-bottom:4px;}
+.r2-party-tag{font-family:'IBM Plex Mono',monospace;font-weight:500;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:22px;display:block;}
+.r2-statement{padding:16px 20px;border:2px solid var(--grey);border-radius:4px;margin-bottom:10px;cursor:pointer;transition:border-color .15s,background .2s;display:flex;gap:16px;align-items:flex-start;position:relative;}
+.r2-statement:hover{border-color:var(--gold);background:var(--surface2);}
+.r2-statement.disabled{cursor:default;pointer-events:none;}
+.r2-label{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:18px;color:var(--gold);flex-shrink:0;width:22px;}
+.r2-text{font-family:'IBM Plex Mono',monospace;font-size:17px;line-height:1.6;color:var(--grey-light);}
+.r2-statement.is-lie{background:var(--red);border-color:var(--red);}
+.r2-statement.is-lie .r2-text,.r2-statement.is-lie .r2-label{color:#fff;}
+.r2-statement.is-lie::after{content:"← THE LIE";font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:11px;letter-spacing:.15em;color:rgba(255,255,255,.75);position:absolute;right:16px;top:50%;transform:translateY(-50%);}
+.r2-statement.is-truth{background:var(--green);border-color:var(--green);}
+.r2-statement.is-truth .r2-text,.r2-statement.is-truth .r2-label{color:#fff;}
+.r2-explanation{font-family:'IBM Plex Mono',monospace;font-size:15px;line-height:1.7;color:var(--grey-light);margin-top:14px;padding:14px 18px;border-left:3px solid var(--gold);background:var(--surface2);display:none;border-radius:0 4px 4px 0;}
+.r2-explanation.show{display:block;}
+
+/* PRIMARY / NAV BUTTONS */
+.btn-primary{background:transparent;border:2px solid var(--white);color:var(--white);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:18px;letter-spacing:.08em;text-transform:uppercase;padding:16px 40px;border-radius:4px;cursor:pointer;transition:background .15s,color .15s,border-color .15s,transform .1s;min-height:52px;}
+.btn-primary:hover{background:var(--gold);border-color:var(--gold);color:var(--bg);}
+.btn-primary:active{transform:scale(.97);}
+.btn-primary.gold{border-color:var(--gold);color:var(--gold);}
+.btn-primary.gold:hover{background:var(--gold);color:var(--bg);}
+.btn-primary.ink{border-color:var(--text-ink);color:var(--text-ink);}
+.btn-primary.ink:hover{background:var(--text-ink);color:var(--paper);}
+.btn-danger{background:transparent;border:2px solid var(--red);color:var(--red);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;padding:12px 28px;border-radius:4px;cursor:pointer;transition:background .15s,color .15s;}
+.btn-danger:hover{background:var(--red);color:#fff;}
+
+/* SCORE FLASH */
+.score-flash{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:18px;color:var(--gold);letter-spacing:.1em;text-transform:uppercase;animation:flashAnim .9s ease forwards;text-align:center;}
+@keyframes flashAnim{0%{opacity:0;transform:translateY(-10px);}20%{opacity:1;transform:translateY(0);}70%{opacity:1;}100%{opacity:0;transform:translateY(5px);}}
+
+/* NEXT BUTTON WRAP */
+.next-btn-wrap{display:flex;justify-content:center;margin-top:8px;flex-direction:column;align-items:center;gap:12px;}
+
+/* CARD NAV */
+.card-nav{display:flex;justify-content:space-between;align-items:center;width:100%;max-width:820px;}
+.card-nav-prog{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--grey);letter-spacing:.1em;}
+
+/* ROUND 3 RESEARCH */
+.r3-research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;width:100%;max-width:1180px;padding:20px 36px;flex-shrink:0;}
+.r3-abbrev{font-family:'Playfair Display',serif;font-weight:900;font-size:40px;color:var(--white);line-height:1;margin-bottom:4px;}
+.r3-fullname{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--grey-light);margin-bottom:12px;line-height:1.4;}
+.r3-leader{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:var(--white);margin-bottom:4px;}
+.r3-polls{font-family:'IBM Plex Mono',monospace;font-size:22px;font-weight:700;color:var(--gold);margin-bottom:12px;}
+.r3-summary{font-family:'IBM Plex Mono',monospace;font-size:14px;line-height:1.65;color:var(--grey-light);margin-bottom:12px;}
+.r3-research{font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.6;color:var(--grey);border-top:1px solid var(--grey);padding-top:10px;}
+
+/* PITCH TEMPLATE */
+.pitch-template{width:100%;max-width:660px;margin:0 auto;}
+.pitch-row{font-family:'IBM Plex Mono',monospace;font-size:21px;line-height:2.3;color:var(--grey-light);border-bottom:1px solid var(--grey);padding:0 4px;}
+.pitch-row span{color:var(--gold);}
+
+/* ROUND 3 VOTE */
+.vote-btns{display:flex;gap:20px;flex-wrap:wrap;justify-content:center;margin-top:16px;}
+.vote-btn{flex:1;min-width:160px;max-width:220px;padding:28px 16px;font-family:'Playfair Display',serif;font-weight:700;font-size:28px;background:var(--surface);border:2px solid var(--grey);border-radius:4px;color:var(--white);cursor:pointer;text-align:center;transition:border-color .15s,background .15s,transform .1s;}
+.vote-btn:hover{border-color:var(--gold);background:var(--surface2);transform:translateY(-2px);}
+.vote-btn:active{transform:scale(.97);}
+.vote-btn.winner{background:var(--gold);border-color:var(--gold);color:var(--bg);}
+
+/* ROUND 4 */
+.r4-counter-wrap{text-align:center;padding:24px 0 14px;flex-shrink:0;}
+.r4-counter-label{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--grey-light);margin-bottom:4px;}
+.r4-counter{font-family:'Playfair Display',serif;font-weight:900;font-size:96px;line-height:1;transition:color .3s;}
+.r4-counter.low{color:var(--red);}
+.r4-counter.mid{color:var(--gold);}
+.r4-counter.high{color:#2ECC71;}
+.r4-threshold{font-family:'IBM Plex Mono',monospace;font-size:14px;color:var(--grey);margin-top:4px;}
+.r4-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%;max-width:1080px;padding:0 36px;margin:0 auto;flex-shrink:0;}
+.r4-party{cursor:pointer;transition:border-color .15s,background .15s,transform .1s;position:relative;}
+.r4-party:hover{border-color:var(--gold);transform:translateY(-2px);}
+.r4-party.selected{border-color:var(--gold);background:rgba(201,151,58,.1);}
+.r4-party.selected::after{content:"✓";position:absolute;top:9px;right:11px;font-size:16px;color:var(--gold);font-weight:700;}
+.r4-body{padding:16px 14px;text-align:center;}
+.r4-abbrev{font-family:'Playfair Display',serif;font-weight:700;font-size:20px;color:var(--white);line-height:1.1;margin-bottom:6px;}
+.r4-seats{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:26px;color:var(--gold);margin-bottom:2px;}
+.r4-seats-label{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--grey);text-transform:uppercase;letter-spacing:.1em;}
+.r4-veto-note{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--grey);line-height:1.4;margin-top:8px;border-top:1px solid var(--grey);padding-top:7px;text-align:left;}
+.veto-banner{background:var(--red);color:#fff;font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:16px;letter-spacing:.05em;text-transform:uppercase;padding:12px 40px;text-align:center;display:none;flex-shrink:0;}
+.veto-banner.show{display:block;}
+.r4-bottom{display:flex;justify-content:space-between;align-items:center;padding:12px 36px 20px;width:100%;max-width:1080px;margin:0 auto;flex-shrink:0;}
+
+/* VICTORY */
+#victory-overlay{position:fixed;inset:0;background:rgba(10,14,27,.95);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:800;gap:24px;text-align:center;padding:40px;}
+#victory-overlay.show{display:flex;}
+.victory-title{font-family:'Playfair Display',serif;font-weight:900;font-size:80px;color:#2ECC71;line-height:1.1;}
+.victory-pts{font-family:'IBM Plex Mono',monospace;font-size:24px;color:var(--gold);letter-spacing:.1em;}
+
+/* CONFETTI */
+.confetti-piece{position:fixed;top:-20px;border-radius:2px;animation:confettiFall linear forwards;pointer-events:none;z-index:900;}
+@keyframes confettiFall{0%{transform:translateY(0) rotate(0deg);opacity:1;}100%{transform:translateY(110vh) rotate(720deg);opacity:0;}}
+
+/* GIVE UP */
+#screen-r4-giveup{background:#000;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:0;padding:40px;}
+.giveup-line{font-family:'Playfair Display',serif;font-weight:900;font-size:48px;color:var(--red);line-height:1.4;opacity:0;animation:fadeInLine .5s ease forwards;}
+.giveup-line:nth-child(1){animation-delay:0s;}
+.giveup-line:nth-child(2){animation-delay:.8s;}
+.giveup-line:nth-child(3){animation-delay:1.6s;}
+.giveup-tryagain{font-family:'IBM Plex Mono',monospace;font-size:16px;color:var(--grey);margin-top:48px;cursor:pointer;opacity:0;animation:fadeInLine .5s ease 3s forwards;text-decoration:underline;}
+@keyframes fadeInLine{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:none;}}
+
+/* SCOREBOARD */
+#scores-btn{position:fixed;bottom:20px;left:20px;z-index:9990;background:transparent;border:2px solid var(--gold);color:var(--gold);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.15em;text-transform:uppercase;padding:10px 18px;border-radius:4px;cursor:pointer;transition:background .15s,color .15s;}
+#scores-btn:hover{background:var(--gold);color:var(--bg);}
+#scoreboard-overlay{position:fixed;inset:0;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center;z-index:9999;}
+#scoreboard-overlay.open{display:flex;}
+.sb-panel{background:var(--surface);border:2px solid var(--gold);border-radius:4px;padding:36px 44px;width:100%;max-width:740px;position:relative;}
+.sb-title{font-family:'Playfair Display',serif;font-weight:900;font-size:44px;color:var(--white);margin-bottom:28px;}
+.sb-close{position:absolute;top:18px;right:22px;background:transparent;border:2px solid var(--grey);color:var(--grey);font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;letter-spacing:.1em;text-transform:uppercase;padding:8px 14px;border-radius:4px;cursor:pointer;transition:border-color .15s,color .15s;}
+.sb-close:hover{border-color:var(--white);color:var(--white);}
+.sb-table{width:100%;border-collapse:collapse;}
+.sb-table th{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--grey-light);padding:10px 12px;text-align:center;border-bottom:2px solid var(--grey);}
+.sb-table th:first-child{text-align:left;}
+.sb-table td{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:500;padding:14px 12px;text-align:center;border-bottom:1px solid var(--grey);color:var(--white);}
+.sb-table td:first-child{text-align:left;color:var(--grey-light);}
+.sb-table td.total{color:var(--gold);font-weight:700;font-size:22px;}
+.sb-table td.editable{cursor:pointer;transition:background .15s;}
+.sb-table td.editable:hover{background:var(--surface2);}
+.sb-table input.score-input{background:var(--surface2);border:1px solid var(--gold);color:var(--white);font-family:'IBM Plex Mono',monospace;font-size:18px;width:60px;text-align:center;padding:4px;border-radius:2px;outline:none;}
+.sb-bonus-note{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--grey);margin-top:16px;padding-top:16px;border-top:1px solid var(--grey);}
+
+/* INTRO */
+#screen-intro{background:var(--paper);color:var(--text-ink);align-items:center;padding:60px 80px;gap:0;}
+.intro-inner{max-width:860px;width:100%;display:flex;flex-direction:column;}
+.intro-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.intro-title{font-family:'Playfair Display',serif;font-weight:900;font-size:92px;line-height:1;color:var(--text-ink);margin-bottom:8px;}
+.intro-subtitle{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:300;color:#777;margin-bottom:36px;}
+.intro-rule{height:3px;background:var(--gold);width:60px;margin:28px 0;}
+.intro-story{font-family:'IBM Plex Mono',monospace;font-size:16px;line-height:1.9;color:var(--text-ink);}
+.intro-story p{margin-bottom:16px;}
+.intro-chart-label{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#888;margin:24px 0 8px;}
+#gdp-chart-wrap{background:var(--bg);border:1px solid #2a3040;border-radius:4px;padding:14px;margin-bottom:24px;}
+.intro-big-stat{font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:500;line-height:2;text-align:center;padding:24px 28px;border-top:2px solid var(--gold);border-bottom:2px solid var(--gold);margin:24px 0;color:var(--text-ink);}
+.intro-big-stat strong{color:var(--gold);}
+
+/* WARMUP */
+#screen-warmup,#screen-warmup-reveal{background:var(--paper);color:var(--text-ink);align-items:center;justify-content:center;text-align:center;padding:60px 80px;gap:24px;}
+.warmup-tag{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);border:1px solid var(--gold);padding:6px 16px;display:inline-block;}
+.warmup-question{font-family:'Playfair Display',serif;font-weight:700;font-size:52px;line-height:1.15;color:var(--text-ink);max-width:780px;}
+.warmup-sub{font-family:'IBM Plex Mono',monospace;font-size:18px;color:#666;}
+.warmup-answer-title{font-family:'Playfair Display',serif;font-weight:900;font-size:68px;color:var(--gold);line-height:1;}
+.govt-list{width:100%;max-width:780px;text-align:left;border:1px solid #ccc;border-radius:4px;overflow:hidden;}
+.govt-row{display:grid;grid-template-columns:28px 1fr 110px 1fr;gap:14px;padding:11px 18px;font-family:'IBM Plex Mono',monospace;font-size:15px;border-bottom:1px solid #ddd;align-items:center;}
+.govt-row:last-child{border-bottom:none;}
+.govt-row.caretaker{color:#999;background:#f9f6f0;}
+.govt-row.regular{color:var(--text-ink);}
+.govt-row .num{font-weight:700;color:var(--gold);}
+.tag{font-size:10px;letter-spacing:.1em;text-transform:uppercase;padding:3px 7px;border-radius:2px;font-weight:700;text-align:center;}
+.tag-caretaker{background:#e0d8ce;color:#888;}
+.tag-regular{background:var(--gold);color:var(--bg);}
+.warmup-punchline{font-family:'Playfair Display',serif;font-weight:900;font-style:italic;font-size:34px;color:var(--gold);max-width:680px;line-height:1.3;}
+.warmup-punchline-sub{font-family:'IBM Plex Mono',monospace;font-size:16px;color:#666;max-width:580px;}
+
+/* SCREEN FOOTER */
+.screen-footer{display:flex;justify-content:flex-end;padding:16px 40px 28px;flex-shrink:0;}
+.screen-footer.center{justify-content:center;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--grey);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ══ INTRO ══ -->
+<div id="screen-intro" class="screen active">
+  <div class="intro-inner">
+    <div class="intro-eyebrow">Party Game · 6 Players · 3 Teams · 4 Rounds</div>
+    <div class="intro-title">САМО В БЪЛГАРИЯ</div>
+    <div class="intro-subtitle">Only in Bulgaria — A Political Party Game</div>
+    <div class="intro-rule"></div>
+    <div class="intro-story">
+      <p>For <strong>500 years</strong>, Bulgaria lived under Ottoman rule. In 1878, it took a Russian army to break it free. The Russo-Turkish War ended five centuries of occupation. Slavic brotherhood, they called it. The debt has never been forgotten.</p>
+      <p>The 20th century was turbulent. Bulgaria lost territory after both world wars — backing the wrong side each time, though it famously refused to deport its Jewish population despite being an Axis ally in WWII. Its cities were bombed by the British. Then came communism. Whatever else it was, it brought a kind of stability. Bulgaria was so aligned with Moscow it applied <em>multiple times</em> to become the 16th Soviet republic. Moscow declined. There were discussions about joining Yugoslavia too.</p>
+      <p>The transition after 1989 was a disaster. State enterprises were sold for nearly nothing. Corruption spread through every institution. In 1996–97, the currency collapsed, inflation hit 1,000%, and people lined up to buy bread.</p>
+    </div>
+    <div class="intro-chart-label">GDP per capita (USD) — Bulgaria 1990–2024</div>
+    <div id="gdp-chart-wrap"><svg id="gdp-chart" width="100%" viewBox="0 0 780 210" preserveAspectRatio="xMidYMid meet"></svg></div>
+    <div class="intro-story">
+      <p>Then came <strong>Boyko Borisov</strong>. Former fire chief. Karate black belt. Bodyguard to Tsar Simeon II. He dominated Bulgarian politics for over a decade — Prime Minister three separate times. Always the largest party. Always surviving.</p>
+      <p>Until 2020, when a photo appeared: a man who looked exactly like the serving Prime Minister asleep in bed. A loaded Glock on the nightstand. Stacks of €500 notes. And what appeared to be gold bars.</p>
+      <p>The protests that followed changed everything. Or tried to.</p>
+    </div>
+    <div class="intro-big-stat">
+      Since 2021, Bulgaria has held <strong>9 parliamentary elections.</strong><br>
+      Voter turnout: <strong>below 40%.</strong><br>
+      The voting booth became the national sport — <strong>and nobody wants to play.</strong>
+    </div>
+    <div class="screen-footer center" style="padding:0;margin-top:16px;margin-bottom:8px;">
+      <button class="btn-primary ink" onclick="goTo('screen-warmup')">Warm-Up Question →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ WARMUP QUESTION ══ -->
+<div id="screen-warmup" class="screen paper-screen">
+  <div class="warmup-tag">Warm-Up — No Points</div>
+  <div class="warmup-question">Since 2020, how many different people have served as Prime Minister of Bulgaria?</div>
+  <div class="warmup-sub">Everyone answer out loud. Write it down. Reveal in a moment.</div>
+  <button class="btn-primary ink" onclick="goTo('screen-warmup-reveal')">Reveal the Answer →</button>
+</div>
+
+<!-- ══ WARMUP REVEAL ══ -->
+<div id="screen-warmup-reveal" class="screen paper-screen">
+  <div class="warmup-answer-title">THE ANSWER</div>
+  <div class="govt-list">
+    <div class="govt-row regular"><span class="num">1</span><span>Boyko Borisov III</span><span class="tag tag-regular">Elected</span><span>GERB — until May 2021</span></div>
+    <div class="govt-row caretaker"><span class="num">2</span><span>Stefan Yanev I</span><span class="tag tag-caretaker">Caretaker</span><span>May – Dec 2021</span></div>
+    <div class="govt-row regular"><span class="num">3</span><span>Kiril Petkov</span><span class="tag tag-regular">Elected</span><span>PP–DB — Dec 2021 – Aug 2022 (7 months)</span></div>
+    <div class="govt-row caretaker"><span class="num">4</span><span>Galab Donev I</span><span class="tag tag-caretaker">Caretaker</span><span>Aug – Dec 2022</span></div>
+    <div class="govt-row caretaker"><span class="num">5</span><span>Galab Donev II</span><span class="tag tag-caretaker">Caretaker</span><span>Dec 2022 – Jun 2023</span></div>
+    <div class="govt-row regular"><span class="num">6</span><span>Nikolai Denkov</span><span class="tag tag-regular">Elected</span><span>PP–DB / GERB — Jun 2023 – Feb 2024</span></div>
+    <div class="govt-row caretaker"><span class="num">7</span><span>Dimitar Glavchev</span><span class="tag tag-caretaker">Caretaker</span><span>Feb – Oct 2024</span></div>
+    <div class="govt-row caretaker"><span class="num">8</span><span>Rositsa Karabelova</span><span class="tag tag-caretaker">Caretaker</span><span>Oct 2024 – Jan 2025</span></div>
+    <div class="govt-row regular"><span class="num">9</span><span>Zhelyaz Zhelyazkov</span><span class="tag tag-regular">Elected</span><span>GERB — Jan 2025 – ongoing</span></div>
+  </div>
+  <div class="warmup-punchline">"9 Prime Ministers. Still counting."</div>
+  <div class="warmup-punchline-sub">If you answered 4 or 5 — you forgot the caretakers. That's the joke.</div>
+  <button class="btn-primary ink" onclick="goTo('screen-r1-intro')">Let's Play →</button>
+</div>
+
+<!-- ══ ROUND 1 INTRO ══ -->
+<div id="screen-r1-intro" class="screen dark-screen round-intro">
+  <div class="round-number">Round 1 of 4</div>
+  <div class="round-title">Real Party<br>or Fever Dream?</div>
+  <ul class="round-rules">
+    <li>A party name appears on screen</li>
+    <li>The named team declares: REAL or FAKE</li>
+    <li>Correct answer: <strong style="color:var(--gold)">1 point</strong></li>
+    <li>Teams rotate — 4 cards each</li>
+    <li>12 cards total</li>
+  </ul>
+  <button class="btn-primary" onclick="startRound1()">Begin Round 1 →</button>
+</div>
+
+<!-- ══ ROUND 1 PLAY ══ -->
+<div id="screen-r1-play" class="screen dark-screen play-screen">
+  <div id="r1-team-banner" class="team-banner">▶ Team 1 Answers Now</div>
+  <div class="play-content">
+    <div id="r1-card" class="card r1-card">
+      <div class="card-bar" style="background:var(--gold)"></div>
+      <div class="card-body">
+        <div class="r1-card-num">CARD 01 OF 12</div>
+        <div class="r1-verdict"></div>
+        <div class="r1-card-name">Party Name</div>
+        <div class="r1-card-explanation">Explanation.</div>
+      </div>
+    </div>
+    <div id="r1-answer-btns" class="answer-btns">
+      <button class="btn-real" onclick="handleR1('real')">✓ Real</button>
+      <button class="btn-fake" onclick="handleR1('fake')">✗ Fake</button>
+    </div>
+    <div id="r1-flash" style="height:28px;"></div>
+    <div id="r1-next-wrap" class="next-btn-wrap" style="display:none;">
+      <button class="btn-primary" onclick="nextR1Card()">Next Card →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ROUND 2 INTRO ══ -->
+<div id="screen-r2-intro" class="screen dark-screen round-intro">
+  <div class="round-number">Round 2 of 4</div>
+  <div class="round-title">Two Truths.<br>One Lie.</div>
+  <ul class="round-rules">
+    <li>A politician appears with statements A, B, C</li>
+    <li>All three visible — one is a lie</li>
+    <li>Named team clicks the lie</li>
+    <li>Correct: <strong style="color:var(--gold)">3 points</strong></li>
+    <li>5 cards per team — 15 cards total</li>
+  </ul>
+  <button class="btn-primary" onclick="startRound2()">Begin Round 2 →</button>
+</div>
+
+<!-- ══ ROUND 2 PLAY ══ -->
+<div id="screen-r2-play" class="screen dark-screen play-screen">
+  <div id="r2-team-banner" class="team-banner">▶ Team 1 Answers Now</div>
+  <div class="play-content" style="max-width:860px;">
+    <div class="card-nav">
+      <span id="r2-prog" class="card-nav-prog">CARD 1 OF 15</span>
+      <span id="r2-pts-label" style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--gold);letter-spacing:.1em;"></span>
+    </div>
+    <div id="r2-card" class="card r2-card">
+      <div class="card-bar" style="background:var(--gold)"></div>
+      <div class="card-body">
+        <div id="r2-politician" class="r2-politician">Name</div>
+        <span id="r2-party" class="r2-party-tag">Party</span>
+        <div id="r2-statements"></div>
+        <div id="r2-explanation" class="r2-explanation"></div>
+      </div>
+    </div>
+    <div id="r2-flash" style="height:28px;margin-top:-8px;"></div>
+    <div id="r2-next-wrap" class="next-btn-wrap" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- ══ ROUND 3 INTRO ══ -->
+<div id="screen-r3-intro" class="screen dark-screen round-intro">
+  <div class="round-number">Round 3 of 4</div>
+  <div class="round-title">Party Research<br>Sprint</div>
+  <ul class="round-rules">
+    <li><strong style="color:var(--gold)">Phase 1 — Research:</strong> Party cards on screen. Use phones. No timer.</li>
+    <li><strong style="color:var(--gold)">Phase 2 — Pitches:</strong> Each team presents out loud. Host advances.</li>
+    <li><strong style="color:var(--gold)">Phase 3 — Vote:</strong> Best pitch wins.</li>
+    <li>Winner: <strong style="color:var(--gold)">10 pts</strong> · Others: 5 pts each</li>
+  </ul>
+  <button class="btn-primary" onclick="goTo('screen-r3-research')">Show Research Cards →</button>
+</div>
+
+<!-- ══ ROUND 3 RESEARCH ══ -->
+<div id="screen-r3-research" class="screen dark-screen">
+  <div style="padding:22px 40px 10px;text-align:center;flex-shrink:0;">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--grey-light);">Research Phase — Use Your Phones</div>
+  </div>
+  <div class="r3-research-grid" id="r3-grid"></div>
+  <div class="screen-footer center">
+    <button class="btn-primary" onclick="goTo('screen-r3-pitch')">Time's Up → Start Pitches →</button>
+  </div>
+</div>
+
+<!-- ══ ROUND 3 PITCH (rules only) ══ -->
+<div id="screen-r3-pitch" class="screen dark-screen round-intro">
+  <div class="round-number">Round 3 — Pitch Phase</div>
+  <div class="round-title" style="font-size:54px;margin-bottom:8px;">Each Team Presents<br>Their Party</div>
+  <div class="pitch-template">
+    <div class="pitch-row"><span>PARTY:</span> [name]</div>
+    <div class="pitch-row"><span>LEADER:</span> [name]</div>
+    <div class="pitch-row"><span>IN ONE SENTENCE:</span> _______________</div>
+    <div class="pitch-row"><span>✅ PRO 1:</span> _______________</div>
+    <div class="pitch-row"><span>✅ PRO 2:</span> _______________</div>
+    <div class="pitch-row"><span>❌ CON 1:</span> _______________</div>
+    <div class="pitch-row"><span>❌ CON 2:</span> _______________</div>
+    <div class="pitch-row"><span>😂 WILD CARD FACT:</span> _______________</div>
+  </div>
+  <div style="font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--grey);margin-top:6px;">Teams read from their notes. Host clicks when each pitch is done.</div>
+  <button class="btn-primary" onclick="goTo('screen-r3-vote')">Go to Vote →</button>
+</div>
+
+<!-- ══ ROUND 3 VOTE ══ -->
+<div id="screen-r3-vote" class="screen dark-screen round-intro">
+  <div class="round-number">Round 3 — Vote</div>
+  <div class="round-title" style="font-size:54px;">Which team gave<br>the best pitch?</div>
+  <div class="vote-btns" id="vote-btns">
+    <button class="vote-btn" onclick="handleVote(0)">Team 1</button>
+    <button class="vote-btn" onclick="handleVote(1)">Team 2</button>
+    <button class="vote-btn" onclick="handleVote(2)">Team 3</button>
+  </div>
+  <div id="vote-result" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:18px;color:var(--gold);text-align:center;line-height:2;"></div>
+  <div id="vote-bonus" style="display:none;font-family:'IBM Plex Mono',monospace;font-size:15px;color:var(--grey-light);margin-top:4px;max-width:520px;text-align:center;">💡 Did anyone find a genuinely shocking fact? Award +2 pts via the Scoreboard.</div>
+  <div id="vote-next" style="display:none;margin-top:4px;"><button class="btn-primary" onclick="goTo('screen-r4-intro')">Continue to Round 4 →</button></div>
+</div>
+
+<!-- ══ ROUND 4 INTRO ══ -->
+<div id="screen-r4-intro" class="screen dark-screen round-intro">
+  <div class="round-number">Round 4 of 4</div>
+  <div class="round-title">Coalition<br>Crisis</div>
+  <ul class="round-rules">
+    <li>Need <strong style="color:var(--gold)">121 seats</strong> to form a government</li>
+    <li>Click parties to add them — vetoes apply</li>
+    <li>Some parties refuse to work with others</li>
+    <li>Cooperative — all teams work together</li>
+    <li>Succeed: <strong style="color:var(--gold)">25 pts each</strong> · Fail: election #10</li>
+  </ul>
+  <button class="btn-primary" onclick="goTo('screen-r4-play')">Build the Coalition →</button>
+</div>
+
+<!-- ══ ROUND 4 PLAY ══ -->
+<div id="screen-r4-play" class="screen dark-screen">
+  <div id="veto-banner" class="veto-banner"></div>
+  <div class="r4-counter-wrap">
+    <div class="r4-counter-label">Seats in Coalition</div>
+    <div id="r4-counter" class="r4-counter low">0</div>
+    <div class="r4-threshold">Threshold: 121 · Total available: 208</div>
+  </div>
+  <div class="r4-grid" id="r4-grid"></div>
+  <div class="r4-bottom">
+    <button class="btn-danger" onclick="goTo('screen-r4-giveup')">We Give Up</button>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--grey);">Click parties to toggle coalition membership</div>
+  </div>
+</div>
+
+<!-- ══ ROUND 4 GIVE UP ══ -->
+<div id="screen-r4-giveup" class="screen" style="background:#000;align-items:center;justify-content:center;text-align:center;flex-direction:column;gap:0;padding:40px;">
+  <div class="giveup-line">Caretaker Government Appointed.</div>
+  <div class="giveup-line" style="margin-top:14px;">Election #10 Scheduled.</div>
+  <div class="giveup-line" style="margin-top:14px;">See you in 6 months.</div>
+  <div class="giveup-tryagain" onclick="resetR4()">...try again?</div>
+</div>
+
+<!-- ══ VICTORY OVERLAY ══ -->
+<div id="victory-overlay">
+  <div class="victory-title">GOVERNMENT FORMED 🇧🇬</div>
+  <div class="victory-pts" id="victory-pts-msg">+25 points to all teams</div>
+  <button class="btn-primary" onclick="document.getElementById('victory-overlay').classList.remove('show');openScoreboard();">View Scoreboard</button>
+</div>
+
+<!-- ══ SCORES BUTTON ══ -->
+<button id="scores-btn" onclick="openScoreboard()">SCORES</button>
+
+<!-- ══ SCOREBOARD OVERLAY ══ -->
+<div id="scoreboard-overlay">
+  <div class="sb-panel">
+    <div class="sb-title">Scoreboard</div>
+    <button class="sb-close" onclick="closeScoreboard()">✕ Close</button>
+    <table class="sb-table">
+      <thead><tr><th>Team</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th><th>Bonus</th><th>Total</th></tr></thead>
+      <tbody id="sb-tbody"></tbody>
+    </table>
+    <div class="sb-bonus-note">Bonus: +5 if your coalition matches the April 19 election result.</div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════
+//  GAME DATA
+//  Edit this section to modify all game content
+// ════════════════════════════════════════════
+
+const GAME_DATA = {
+
+  // ── ROUND 1 — Real Party or Fever Dream? ──
+  // ADD MORE ROUND 1 ITEMS BELOW THIS LINE
+  round1: [
+    { name:"There Is Such a People", real:true, explanation:"100% real. ITN — Ima Takav Narod. Named after a Slavi Trifonov quote. He won two elections with it, then refused to form a government. Both times." },
+    { name:"Morality, Unity, Honour", real:true, explanation:"Real. MECh. The acronym means 'sword' in Bulgarian. Subtlety has never been a requirement for Bulgarian party branding." },
+    { name:"Movement of Non-Party Candidates", real:true, explanation:"Real. A formally registered party specifically for people who don't want to be in a party. A party." },
+    { name:"Movement of Honest Taxpayers", real:false, explanation:"Fake — but plausibly Bulgarian. Honest taxpayers and reasonable decisions share the same availability in this country." },
+    { name:"Out of the EU and NATO", real:true, explanation:"Real. Registered for 2026. The name is the entire manifesto. No further elaboration was provided or felt necessary." },
+    { name:"People's Alliance for Reasonable Decisions", real:false, explanation:"Fake. 'Reasonable decisions' has not appeared as a registered Bulgarian political platform at any point in recorded history." },
+    { name:"People's Party — The Truth and Only the Truth", real:true, explanation:"Real. 'The Truth' alone was apparently insufficient. The additional emphasis was felt to be necessary." },
+    { name:"Unrepentant Bulgaria", real:true, explanation:"Real. Непокорна България. Nationalist movement. The name is doing exactly what it intends." },
+    { name:"We Continue the Change", real:true, explanation:"Real. PP — governed for 7 months. The change was continued, briefly, then discontinued." },
+    { name:"Democratic Forces for a New Beginning (Again)", real:false, explanation:"Fake — though 'New Beginning' IS a real Bulgarian party suffix. The '(Again)' is editorial." },
+    { name:"My Bulgaria", real:true, explanation:"Real. Моя България. Formed 2026. Short on policy. Long on possessive pronouns." },
+    { name:"The Party That Will Finally Fix Things", real:false, explanation:"Fake. But also the implicit campaign promise of every single party above. So in a sense, the most honest name here." }
+  ],
+  // END ROUND 1 ITEMS
+
+  // ── ROUND 2 — Two Truths One Lie ──
+  // Teams: cards[0-4] = Team 1, [5-9] = Team 2, [10-14] = Team 3
+  // ADD MORE ROUND 2 CARDS BELOW THIS LINE
+  round2: [
+    // ══ TEAM 1 ══
+    { politician:"Boyko Borisov", party:"GERB",
+      statements:[
+        { label:"A", text:"Before politics, Borisov was head of the National Fire Safety Service — Bulgaria's top firefighting official. His department issued fire safety certificates across the country.", isLie:false },
+        { label:"B", text:"Borisov holds a genuine black belt in karate and was photographed in a karate gi at official events on more than one occasion, footage that became an international curiosity.", isLie:false },
+        { label:"C", text:"Before firefighting, Borisov worked as a PE teacher at a Sofia secondary school, coaching its karate club to three consecutive regional championships.", isLie:true }
+      ],
+      lieExplanation:"He was never a PE teacher. Career path: karate instructor → municipal security official → national fire service chief. The classroom was never involved." },
+
+    { politician:"Boyko Borisov", party:"GERB",
+      statements:[
+        { label:"A", text:"In 2020, photos went viral showing a man who looked exactly like the serving PM asleep in bed — a loaded Glock and stacks of €500 notes on his nightstand, with what appeared to be gold bars.", isLie:false },
+        { label:"B", text:"The same 2020 leak included a video of Borisov singing karaoke at a private party. The song was 'My Way' by Frank Sinatra. Eyewitnesses said he was, unfortunately, quite good.", isLie:true },
+        { label:"C", text:"Following the 2020 photos, Bulgaria saw some of its largest street protests since the 1990s, with demonstrators calling for Borisov's resignation for weeks across multiple cities.", isLie:false }
+      ],
+      lieExplanation:"No karaoke video. The leak was photos only — the pistol, the cash, the apparent gold bars. No Sinatra was involved. The gold bars were considered sufficient." },
+
+    { politician:"Boyko Borisov", party:"GERB",
+      statements:[
+        { label:"A", text:"Pope John Paul II visited Bulgaria in 2002 and Pope Francis visited in 2019 — meaning two sitting popes have met Borisov during his political career.", isLie:false },
+        { label:"B", text:"All three modern popes — John Paul II, Benedict XVI, and Francis — personally visited Bulgaria and met Borisov, making him uniquely blessed in modern European politics.", isLie:true },
+        { label:"C", text:"Despite losing power amid mass protests in 2021, GERB has remained the single largest party in every Bulgarian election since 2009.", isLie:false }
+      ],
+      lieExplanation:"Only two popes visited Bulgaria under Borisov: John Paul II (2002) and Francis (2019). Benedict XVI never visited. Three popes is one pope too many — even for Borisov." },
+
+    { politician:"Delyan Peevski", party:"MRF–New Beginning",
+      statements:[
+        { label:"A", text:"By age 40, Peevski had accumulated controlling interests in over 80 Bulgarian newspapers, websites, and media outlets — the dominant force in Bulgarian print and online media.", isLie:false },
+        { label:"B", text:"Peevski's 2013 DANS appointment triggered Bulgaria's largest street protests since 1997. He resigned after two days — the shortest tenure of any Bulgarian national security chief.", isLie:false },
+        { label:"C", text:"When the 2013 protests forced his resignation, Peevski held a tearful press conference comparing himself to Dreyfus, the wrongfully-accused French officer, citing political persecution.", isLie:true }
+      ],
+      lieExplanation:"No press conference. No tears. No Dreyfus comparison. Peevski simply stopped being the DANS chief. He does not do emotional press conferences. He doesn't need to." },
+
+    { politician:"Delyan Peevski", party:"MRF–New Beginning",
+      statements:[
+        { label:"A", text:"In 2023, Peevski was placed on the US Magnitsky Act sanctions list for 'significant corruption' — freezing his US assets and banning Americans from doing business with him.", isLie:false },
+        { label:"B", text:"Despite being Magnitsky-sanctioned, Peevski ran as party leader in 2024, won a parliamentary seat, and continues to serve as an MP.", isLie:false },
+        { label:"C", text:"After the Magnitsky sanctions, Peevski attempted to enter the US Embassy in Sofia to formally contest the decision. He was turned away at the gate. The CCTV footage leaked to media.", isLie:true }
+      ],
+      lieExplanation:"This absolutely did not happen. Peevski did not attempt to walk into the US Embassy. He responded by continuing his media empire, running for parliament, and carrying on as before." },
+
+    // ══ TEAM 2 ══
+    { politician:"Rumen Radev", party:"Progressive Bulgaria",
+      statements:[
+        { label:"A", text:"Before becoming President, Radev was Commander of the Bulgarian Air Force — not the Minister of Defence, a common confusion in foreign press coverage.", isLie:false },
+        { label:"B", text:"Radev resigned the presidency approximately 8 months before his term ended — unprecedented — and within days announced he was forming a new political party.", isLie:false },
+        { label:"C", text:"Radev's resignation speech included a 34-slide presentation criticising every Bulgarian government since 1989, with GDP charts and a slide titled 'This Is What You Did'.", isLie:true }
+      ],
+      lieExplanation:"No slides. No charts. No titles. Radev gave a speech and left. His party then published no manifesto either. The void was the entire message." },
+
+    { politician:"Rumen Radev", party:"Progressive Bulgaria",
+      statements:[
+        { label:"A", text:"Radev's Progressive Bulgaria shot to the top of polls without a single published policy position, formal manifesto, or policy platform of any kind.", isLie:false },
+        { label:"B", text:"His party gave fewer than five public press conferences in its first six months — relying entirely on Radev's personal popularity from two presidential terms.", isLie:false },
+        { label:"C", text:"Radev chose 'Progressive Bulgaria' after internal polling showed 'Progressive' outperformed 'Democratic', 'National', and 'People's' by 18 points among under-40 voters.", isLie:true }
+      ],
+      lieExplanation:"No such A/B polling was published. Explaining a name choice would require a communications strategy. A communications strategy would require a manifesto. They don't do those." },
+
+    { politician:"Kostadin Kostadinov", party:"Vazrazhdane (Revival)",
+      statements:[
+        { label:"A", text:"Kostadinov publicly calls for Bulgaria to withdraw from NATO, lift all sanctions against Russia, and immediately stop all military support for Ukraine.", isLie:false },
+        { label:"B", text:"Vazrazhdane entered parliament in 2022 by mobilising voters angry about COVID vaccine mandates — and has grown its vote share in every subsequent election.", isLie:false },
+        { label:"C", text:"Kostadinov once delivered an unscheduled speech in parliament entirely in Church Slavonic — the medieval liturgical language — to protest EU cultural imperialism.", isLie:true }
+      ],
+      lieExplanation:"No Church Slavonic parliamentary speeches on record. Though given his documented positions, nobody in the room should feel entirely confident this couldn't happen." },
+
+    { politician:"Slavi Trifonov", party:"ITN — There Is Such a People",
+      statements:[
+        { label:"A", text:"Trifonov hosted Bulgaria's most-watched late-night entertainment show for over 20 years before forming a political party — arguably the most recognisable face in the country.", isLie:false },
+        { label:"B", text:"His party ITN won the April 2021 election and refused to form a government. They then won the July 2021 election — and again refused to form a government.", isLie:false },
+        { label:"C", text:"Trifonov announced his political retirement live on stage at a concert at the Sofia National Palace of Culture, to an emotional crowd of 12,000 fans.", isLie:true }
+      ],
+      lieExplanation:"He announced his retirement via Facebook video. No concert. No fans. No emotional farewell. Just a video. After winning two elections and governing through neither of them." },
+
+    { politician:"Stefan Yanev", party:"Caretaker PM × 2 / Bulgaria Rise",
+      statements:[
+        { label:"A", text:"Yanev was appointed caretaker Prime Minister twice — by President Radev in May 2021 and again in August 2022 — without ever winning a general election.", isLie:false },
+        { label:"B", text:"As Defence Minister, Yanev described Russia's full-scale invasion of Ukraine as a 'special military operation' — using Kremlin language — and was fired within days by PM Petkov.", isLie:false },
+        { label:"C", text:"After being fired, Yanev launched a party that peaked at 14% in polls, then received 1.2% on election day — a polling collapse analysts called unprecedented.", isLie:true }
+      ],
+      lieExplanation:"Bulgaria Rise is real and Yanev did launch it. But the 14%-to-1.2% collapse figure is invented. His actual result was modest. Bulgarian pre-election polling is, more broadly, best described as creative fiction." },
+
+    // ══ TEAM 3 ══
+    { politician:"Ahmed Dogan", party:"MRF Founder & Unofficial Patron",
+      statements:[
+        { label:"A", text:"In January 2013, a man walked onto the stage of an MRF congress and pointed a gas pistol directly at Dogan's temple from centimetres away. The weapon misfired. Dogan was unharmed.", isLie:false },
+        { label:"B", text:"Despite holding no official role, Dogan was photographed seated on what appeared to be a golden ornate throne at an MRF event — an image that went internationally viral.", isLie:false },
+        { label:"C", text:"After the assassination attempt, Dogan gave an interview attributing his survival to divine intervention, citing three prophetic visions that week warning him not to attend the congress.", isLie:true }
+      ],
+      lieExplanation:"No divine visions were reported. Dogan did not attribute the misfired gun to prophetic dreams. He remained calm, composed, and continued with the congress. The throne photos came later." },
+
+    { politician:"Kiril Petkov", party:"PP — We Continue the Change",
+      statements:[
+        { label:"A", text:"Petkov held dual Canadian-Bulgarian citizenship when first appointed minister — ruled unconstitutional, requiring him to renounce his Canadian passport while serving.", isLie:false },
+        { label:"B", text:"His government lasted 7 months before losing a no-confidence vote — one of the shortest democratically-formed governments in modern Bulgarian history.", isLie:false },
+        { label:"C", text:"The no-confidence vote was passed by a single vote — with one MP from his own coalition voting against him, then immediately leaving the country on a private jet.", isLie:true }
+      ],
+      lieExplanation:"The vote passed by more than one margin, and no cinematic private-jet exit followed. The coalition's unravelling was messy and multi-party. Good story though." },
+
+    { politician:"Boyko Borisov (Diplomatic Edition)", party:"GERB",
+      statements:[
+        { label:"A", text:"Angela Merkel has a documented fear of dogs stemming from a 1995 biting incident — well-known in European diplomatic circles throughout her chancellorship.", isLie:false },
+        { label:"B", text:"At a 2012 EU summit, Merkel asked a Bulgarian aide if Borisov 'always shows up like this' after he arrived for a formal dinner in a tracksuit, reportedly from a workout, and sat next to her.", isLie:true },
+        { label:"C", text:"In 2007, Putin deliberately brought his large black Labrador into a meeting with Merkel, who was visibly frightened. Putin later acknowledged he knew about her fear of dogs.", isLie:false }
+      ],
+      lieExplanation:"Merkel's fear of dogs and Putin's Labrador incident are both well documented and real. The tracksuit dinner story is invented — though Borisov's appearance at formal occasions has raised eyebrows more than once." },
+
+    { politician:"Todor Zhivkov", party:"Bulgarian Communist Party (1954–1989)",
+      statements:[
+        { label:"A", text:"Zhivkov ruled Bulgaria for 35 years — longer than any other Eastern Bloc leader — and reportedly cried when Khrushchev was removed, considering him a personal mentor.", isLie:false },
+        { label:"B", text:"Under Zhivkov, Bulgaria applied multiple times to become the 16th Soviet republic. Moscow declined each time, finding Bulgarian enthusiasm for total absorption somewhat excessive.", isLie:false },
+        { label:"C", text:"Bulgaria was the only Warsaw Pact country to refuse participation in the 1968 Soviet invasion of Czechoslovakia, citing Slavic brotherhood with the Czech and Slovak peoples.", isLie:true }
+      ],
+      lieExplanation:"False. Bulgaria sent troops to Czechoslovakia in 1968. Slavic brotherhood did not prevent that. Only Romania refused to participate — Ceaușescu's one genuine act of independence from Moscow." },
+
+    { politician:"Bulgarian Democracy (collective)", party:"Everyone, 2021–2026",
+      statements:[
+        { label:"A", text:"The Bulgarian Constitution contains no limit on the number of snap elections — there is no constitutional mechanism to brake electoral chaos.", isLie:false },
+        { label:"B", text:"Bulgarian voter turnout in recent elections has fallen below 40% — more than 6 in 10 eligible voters chose not to participate.", isLie:false },
+        { label:"C", text:"EU law requires any member state holding more than four elections in three years to submit a democratic governance review to the European Commission. Bulgaria triggered this in 2024.", isLie:true }
+      ],
+      lieExplanation:"No such EU law exists. There is no democratic governance trigger for excessive elections. The EU watched, issued reports, expressed concern, and that is the extent of it." }
+  ],
+  // END ROUND 2 CARDS
+
+  // ── ROUND 3 — Party Research Cards ──
+  round3: [
+    { abbrev:"GERB", fullName:"Citizens for European Development of Bulgaria",
+      leader:"Boyko Borisov", polls:"~20%", color:"#003087",
+      summary:"Centre-right, pro-EU, pro-NATO. Bulgaria's dominant party since 2009. Has governed more than any other. Gold bar photos and all.",
+      researchAngle:"How many times was Borisov PM? What was in the 2020 nightstand photos? Who were the Eight Dwarfs?" },
+    { abbrev:"PP–DB", fullName:"We Continue the Change – Democratic Bulgaria",
+      leader:"Vasilev, Mirchev, Bozhanov, Atanasov (all four)", polls:"~12%", color:"#009A44",
+      summary:"Liberal, anti-corruption, briefly governed 7 months. Currently has four co-leaders simultaneously. This is a choice they have made.",
+      researchAngle:"Who is Kiril Petkov? What did they actually achieve in 7 months? Why does one party need four leaders?" },
+    { abbrev:"VAZRAZHDANE", fullName:"Revival",
+      leader:"Kostadin Kostadinov", polls:"~7%", color:"#CC0000",
+      summary:"Far-right, pro-Russian, anti-NATO. Wants Bulgaria out of NATO, Russia sanctions lifted, Ukraine abandoned. Growing every election.",
+      researchAngle:"What % of Bulgarians hold pro-Russian views? Their specific NATO demands? Any documented Russian connections?" }
+  ],
+
+  // ── ROUND 4 — Coalition Parties ──
+  // ADD MORE PARTIES BELOW THIS LINE
+  round4: [
+    { id:"PB",      abbrev:"Progressive BG",    seats:74, color:"#4A90D9", vetoes:["GERB","MRFNN"], description:"Radev's new party. Won't touch GERB or Peevski." },
+    { id:"GERB",    abbrev:"GERB–SDS",          seats:49, color:"#003087", vetoes:["MRFNN"],        description:"Borisov's party. Refuses Peevski (publicly)." },
+    { id:"PPDB",    abbrev:"PP–DB",             seats:28, color:"#009A44", vetoes:["MRFNN","REVIVAL"], description:"Reformists. Blocks Peevski and far-right." },
+    { id:"MRFNN",   abbrev:"MRF–New Beginning", seats:24, color:"#9B59B6", vetoes:[],               description:"Peevski's party. No formal vetoes. Everyone avoids them anyway." },
+    { id:"REVIVAL", abbrev:"Vazrazhdane",        seats:16, color:"#CC0000", vetoes:["PPDB"],         description:"Pro-Russian. Refuses PP–DB." },
+    { id:"BSP",     abbrev:"BSP–United Left",    seats: 9, color:"#E74C3C", vetoes:["MRFNN"],        description:"Socialists. Refuse Peevski." },
+    { id:"MECH",    abbrev:"MECh",               seats: 8, color:"#E67E22", vetoes:["PPDB"],         description:"Nationalists. Refuse PP–DB." }
+  ]
+  // END ROUND 4 PARTIES
+};
+
+// ════════════════════════════════════════════
+//  STATE
+// ════════════════════════════════════════════
+const STATE = {
+  teams: [
+    { name:'Team 1', scores:{ r1:0, r2:0, r3:0, r4:0, bonus:0 } },
+    { name:'Team 2', scores:{ r1:0, r2:0, r3:0, r4:0, bonus:0 } },
+    { name:'Team 3', scores:{ r1:0, r2:0, r3:0, r4:0, bonus:0 } },
+  ],
+  r1:{ index:0, revealed:false },
+  r2:{ index:0, revealed:false },
+  r4:{ selected:new Set(), victory:false }
+};
+
+// ════════════════════════════════════════════
+//  SCREEN NAVIGATION
+// ════════════════════════════════════════════
+function goTo(id) {
+  const cur = document.querySelector('.screen.active');
+  if (cur) {
+    cur.style.opacity = '0';
+    setTimeout(() => { cur.classList.remove('active'); activate(id); }, 280);
+  } else {
+    activate(id);
+  }
+}
+function activate(id) {
+  const s = document.getElementById(id);
+  if (!s) return;
+  s.classList.add('active');
+  s.style.opacity = '0';
+  requestAnimationFrame(() => requestAnimationFrame(() => { s.style.opacity = '1'; }));
+}
+
+// ════════════════════════════════════════════
+//  GDP CHART
+// ════════════════════════════════════════════
+function buildGDPChart() {
+  const data = [
+    [1990,2520],[1991,1800],[1992,1550],[1993,1320],[1994,1400],
+    [1995,1490],[1996,1200],[1997,1250],[1998,1580],[1999,1800],
+    [2000,1900],[2001,2140],[2002,2400],[2003,2750],[2004,3240],
+    [2005,3820],[2006,4480],[2007,5540],[2008,7050],[2009,6450],
+    [2010,6700],[2011,7480],[2012,7250],[2013,7500],[2014,7800],
+    [2015,6990],[2016,7400],[2017,8230],[2018,9210],[2019,9540],
+    [2020,8400],[2021,10100],[2022,12850],[2023,13500],[2024,15000]
+  ];
+  const svg = document.getElementById('gdp-chart');
+  const W=780, H=210, PL=46, PR=16, PT=20, PB=30;
+  const cW=W-PL-PR, cH=H-PT-PB;
+  const maxY=16000;
+  const xS = i => PL + (i/(data.length-1))*cW;
+  const yS = v => PT + cH - (v/maxY)*cH;
+
+  const pathD = data.map((pt,i)=>`${i===0?'M':'L'}${xS(i).toFixed(1)},${yS(pt[1]).toFixed(1)}`).join(' ');
+  const fillD = pathD + ` L${xS(data.length-1).toFixed(1)},${(PT+cH).toFixed(1)} L${PL},${(PT+cH).toFixed(1)} Z`;
+
+  let grid='', ticks='', ann='';
+
+  // Gridlines
+  [5000,10000,15000].forEach(v => {
+    const y=yS(v).toFixed(1);
+    grid += `<line x1="${PL}" y1="${y}" x2="${W-PR}" y2="${y}" stroke="#1e2a3a" stroke-width="1"/>`;
+    grid += `<text x="${PL-4}" y="${(+y+4).toFixed(1)}" text-anchor="end" fill="#3a4a5a" font-size="10" font-family="IBM Plex Mono,monospace">$${v/1000}k</text>`;
+  });
+
+  // X axis ticks
+  [[1990,0],[1997,7],[2007,17],[2020,30],[2024,34]].forEach(([yr,idx]) => {
+    const x=xS(idx).toFixed(1);
+    ticks += `<line x1="${x}" y1="${PT+cH}" x2="${x}" y2="${PT+cH+4}" stroke="#3a4a5a" stroke-width="1"/>`;
+    ticks += `<text x="${x}" y="${PT+cH+16}" text-anchor="middle" fill="#556" font-size="10" font-family="IBM Plex Mono,monospace">${yr}</text>`;
+  });
+
+  // Annotations
+  [{ idx:7, label:"Crisis", color:"#C0392B" },
+   { idx:17, label:"EU Accession", color:"#C9973A" },
+   { idx:30, label:"COVID", color:"#C0392B" }].forEach(a => {
+    const x=xS(a.idx).toFixed(1), y=yS(data[a.idx][1]).toFixed(1);
+    ann += `<line x1="${x}" y1="${PT}" x2="${x}" y2="${y}" stroke="${a.color}" stroke-width="1" stroke-dasharray="3,3" opacity=".6"/>`;
+    ann += `<text x="${x}" y="${PT-4}" text-anchor="middle" fill="${a.color}" font-size="9" font-family="IBM Plex Mono,monospace" opacity=".8">${a.label}</text>`;
+  });
+
+  // Borisov era shading
+  const bx=xS(19).toFixed(1), bw=(xS(31)-xS(19)).toFixed(1);
+  ann += `<rect x="${bx}" y="${PT}" width="${bw}" height="${cH}" fill="rgba(201,151,58,0.04)"/>`;
+  ann += `<text x="${(+bx + +bw/2).toFixed(1)}" y="${PT+11}" text-anchor="middle" fill="rgba(201,151,58,0.35)" font-size="9" font-family="IBM Plex Mono,monospace" font-style="italic">Borisov era</text>`;
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="gdpFill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#C9973A" stop-opacity=".22"/>
+        <stop offset="100%" stop-color="#C9973A" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    ${grid}${ticks}${ann}
+    <path d="${fillD}" fill="url(#gdpFill)"/>
+    <path d="${pathD}" fill="none" stroke="#C9973A" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${xS(data.length-1).toFixed(1)}" cy="${yS(15000).toFixed(1)}" r="4" fill="#C9973A"/>
+  `;
+}
+
+// ════════════════════════════════════════════
+//  ROUND 3 RESEARCH
+// ════════════════════════════════════════════
+function buildR3Grid() {
+  document.getElementById('r3-grid').innerHTML = GAME_DATA.round3.map(p => `
+    <div class="card">
+      <div class="card-bar" style="background:${p.color}"></div>
+      <div class="card-body" style="padding:20px 22px;">
+        <div class="r3-abbrev">${p.abbrev}</div>
+        <div class="r3-fullname">${p.fullName}</div>
+        <div class="r3-leader">👤 ${p.leader}</div>
+        <div class="r3-polls">${p.polls}</div>
+        <div class="r3-summary">${p.summary}</div>
+        <div class="r3-research">🔍 What to Google:<br>${p.researchAngle}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════
+//  ROUND 4 GRID
+// ════════════════════════════════════════════
+function buildR4Grid() {
+  document.getElementById('r4-grid').innerHTML = GAME_DATA.round4.map(p => `
+    <div class="card r4-party" id="r4-${p.id}" onclick="toggleR4('${p.id}')">
+      <div class="card-bar" style="background:${p.color}"></div>
+      <div class="r4-body">
+        <div class="r4-abbrev">${p.abbrev}</div>
+        <div class="r4-seats">${p.seats}</div>
+        <div class="r4-seats-label">seats</div>
+        <div class="r4-veto-note">${p.description}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ════════════════════════════════════════════
+//  ROUND 1
+// ════════════════════════════════════════════
+function startRound1() {
+  STATE.r1.index = 0;
+  STATE.r1.revealed = false;
+  renderR1Card();
+  goTo('screen-r1-play');
+}
+
+function renderR1Card() {
+  const i = STATE.r1.index;
+  const item = GAME_DATA.round1[i];
+  const teamIdx = i % 3;
+  const teamName = STATE.teams[teamIdx].name;
+
+  document.getElementById('r1-team-banner').textContent = `▶ ${teamName} Answers Now`;
+
+  const card = document.getElementById('r1-card');
+  card.className = 'card r1-card';
+  card.querySelector('.r1-card-num').textContent = `CARD ${String(i+1).padStart(2,'0')} OF ${GAME_DATA.round1.length}`;
+  card.querySelector('.r1-verdict').textContent = '';
+  card.querySelector('.r1-card-name').textContent = item.name;
+  card.querySelector('.r1-card-explanation').textContent = item.explanation;
+
+  document.getElementById('r1-answer-btns').style.display = 'flex';
+  document.getElementById('r1-flash').innerHTML = '';
+  document.getElementById('r1-next-wrap').style.display = 'none';
+  document.getElementById('r1-next-wrap').innerHTML = '<button class="btn-primary" onclick="nextR1Card()">Next Card →</button>';
+  STATE.r1.revealed = false;
+}
+
+function handleR1(answer) {
+  if (STATE.r1.revealed) return;
+  STATE.r1.revealed = true;
+  const item = GAME_DATA.round1[STATE.r1.index];
+  const teamIdx = STATE.r1.index % 3;
+  const correct = (answer === 'real') === item.real;
+  const card = document.getElementById('r1-card');
+
+  if (item.real) {
+    card.classList.add('revealed-real');
+    card.querySelector('.r1-verdict').textContent = '✓ REAL PARTY';
+  } else {
+    card.classList.add('revealed-fake');
+    card.querySelector('.r1-verdict').textContent = '✗ FEVER DREAM';
+  }
+
+  document.getElementById('r1-answer-btns').style.display = 'none';
+
+  if (correct) {
+    STATE.teams[teamIdx].scores.r1 += 1;
+    document.getElementById('r1-flash').innerHTML = `<div class="score-flash">+1 — ${STATE.teams[teamIdx].name}!</div>`;
+  } else {
+    document.getElementById('r1-flash').innerHTML = `<div class="score-flash" style="color:var(--red)">Wrong!</div>`;
+  }
+
+  const nextWrap = document.getElementById('r1-next-wrap');
+  nextWrap.style.display = 'flex';
+  if (STATE.r1.index === GAME_DATA.round1.length - 1) {
+    nextWrap.innerHTML = '<button class="btn-primary" onclick="showR1Summary()">Round Complete →</button>';
+  }
+}
+
+function nextR1Card() {
+  STATE.r1.index++;
+  renderR1Card();
+}
+
+function showR1Summary() {
+  const scores = STATE.teams.map(t => `${t.name}: <strong style="color:var(--gold)">${t.scores.r1} pts</strong>`).join(' &nbsp;·&nbsp; ');
+  document.getElementById('r1-next-wrap').innerHTML = `
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:17px;color:var(--grey-light);text-align:center;margin-bottom:14px;">${scores}</div>
+    <button class="btn-primary" onclick="goTo('screen-r2-intro')">Continue to Round 2 →</button>
+  `;
+}
+
+// ════════════════════════════════════════════
+//  ROUND 2
+// ════════════════════════════════════════════
+function startRound2() {
+  STATE.r2.index = 0;
+  STATE.r2.revealed = false;
+  renderR2Card();
+  goTo('screen-r2-play');
+}
+
+function renderR2Card() {
+  const i = STATE.r2.index;
+  const card = GAME_DATA.round2[i];
+  const teamIdx = Math.floor(i / 5);
+
+  document.getElementById('r2-team-banner').textContent = `▶ ${STATE.teams[teamIdx].name} Answers Now`;
+  document.getElementById('r2-prog').textContent = `CARD ${i+1} OF ${GAME_DATA.round2.length}`;
+  document.getElementById('r2-pts-label').textContent = '';
+  document.getElementById('r2-politician').textContent = card.politician;
+  document.getElementById('r2-party').textContent = card.party;
+  document.getElementById('r2-explanation').textContent = '';
+  document.getElementById('r2-explanation').classList.remove('show');
+
+  document.getElementById('r2-statements').innerHTML = card.statements.map((s, idx) => `
+    <div class="r2-statement" id="r2-s-${idx}" onclick="handleR2(${idx})">
+      <span class="r2-label">${s.label}</span>
+      <span class="r2-text">${s.text}</span>
+    </div>
+  `).join('');
+
+  document.getElementById('r2-flash').innerHTML = '';
+  document.getElementById('r2-next-wrap').style.display = 'none';
+  document.getElementById('r2-next-wrap').innerHTML = '';
+  STATE.r2.revealed = false;
+}
+
+function handleR2(statIdx) {
+  if (STATE.r2.revealed) return;
+  STATE.r2.revealed = true;
+  const i = STATE.r2.index;
+  const card = GAME_DATA.round2[i];
+  const teamIdx = Math.floor(i / 5);
+  const correct = card.statements[statIdx].isLie;
+
+  card.statements.forEach((s, idx) => {
+    const el = document.getElementById(`r2-s-${idx}`);
+    el.classList.add('disabled');
+    el.classList.add(s.isLie ? 'is-lie' : 'is-truth');
+  });
+
+  const expEl = document.getElementById('r2-explanation');
+  expEl.textContent = card.lieExplanation;
+  expEl.classList.add('show');
+
+  if (correct) {
+    STATE.teams[teamIdx].scores.r2 += 3;
+    document.getElementById('r2-flash').innerHTML = `<div class="score-flash">+3 — ${STATE.teams[teamIdx].name}!</div>`;
+    document.getElementById('r2-pts-label').textContent = '+3 PTS';
+  } else {
+    document.getElementById('r2-flash').innerHTML = `<div class="score-flash" style="color:var(--red)">Wrong!</div>`;
+  }
+
+  const nextWrap = document.getElementById('r2-next-wrap');
+  nextWrap.style.display = 'flex';
+  nextWrap.innerHTML = (STATE.r2.index === GAME_DATA.round2.length - 1)
+    ? '<button class="btn-primary" onclick="showR2Summary()">Round Complete →</button>'
+    : '<button class="btn-primary" onclick="nextR2Card()">Next Card →</button>';
+}
+
+function nextR2Card() {
+  STATE.r2.index++;
+  renderR2Card();
+}
+
+function showR2Summary() {
+  const scores = STATE.teams.map(t => `${t.name}: <strong style="color:var(--gold)">${t.scores.r2} pts</strong>`).join(' &nbsp;·&nbsp; ');
+  document.getElementById('r2-next-wrap').innerHTML = `
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:17px;color:var(--grey-light);text-align:center;margin-bottom:14px;">${scores}</div>
+    <button class="btn-primary" onclick="goTo('screen-r3-intro')">Continue to Round 3 →</button>
+  `;
+}
+
+// ════════════════════════════════════════════
+//  ROUND 3 VOTE
+// ════════════════════════════════════════════
+function handleVote(winnerIdx) {
+  document.querySelectorAll('.vote-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (i === winnerIdx) b.classList.add('winner');
+  });
+  STATE.teams.forEach((t, i) => { t.scores.r3 += (i === winnerIdx) ? 10 : 5; });
+  const winner = STATE.teams[winnerIdx].name;
+  document.getElementById('vote-result').innerHTML = `🏆 ${winner} wins the pitch!<br><span style="font-size:14px;color:var(--grey-light);">+10 to ${winner} · +5 to others</span>`;
+  document.getElementById('vote-result').style.display = 'block';
+  document.getElementById('vote-bonus').style.display = 'block';
+  document.getElementById('vote-next').style.display = 'block';
+}
+
+// ════════════════════════════════════════════
+//  ROUND 4
+// ════════════════════════════════════════════
+function toggleR4(id) {
+  if (STATE.r4.victory) return;
+  const sel = STATE.r4.selected;
+  if (sel.has(id)) sel.delete(id); else sel.add(id);
+  document.querySelectorAll('.r4-party').forEach(el => {
+    const pid = el.id.replace('r4-', '');
+    el.classList.toggle('selected', sel.has(pid));
+  });
+  updateR4Counter();
+  const noConflicts = checkVetoes();
+  if (noConflicts) checkVictory();
+}
+
+function updateR4Counter() {
+  const total = [...STATE.r4.selected].reduce((sum, id) => {
+    const p = GAME_DATA.round4.find(x => x.id === id);
+    return sum + (p ? p.seats : 0);
+  }, 0);
+  const el = document.getElementById('r4-counter');
+  el.textContent = total;
+  el.className = 'r4-counter ' + (total < 100 ? 'low' : total < 121 ? 'mid' : 'high');
+}
+
+function checkVetoes() {
+  const sel = [...STATE.r4.selected];
+  const conflicts = [];
+  sel.forEach(id => {
+    const p = GAME_DATA.round4.find(x => x.id === id);
+    if (!p) return;
+    p.vetoes.forEach(vid => {
+      if (sel.includes(vid)) {
+        const key = [id, vid].sort().join('-');
+        if (!conflicts.includes(key)) conflicts.push(key);
+      }
+    });
+  });
+  const banner = document.getElementById('veto-banner');
+  if (conflicts.length) {
+    const pairs = conflicts.map(k => {
+      const [a,b] = k.split('-');
+      return `${GAME_DATA.round4.find(x=>x.id===a).abbrev} ✗ ${GAME_DATA.round4.find(x=>x.id===b).abbrev}`;
+    });
+    banner.textContent = `⚠ VETO CONFLICT: ${pairs.join(' — ')}`;
+    banner.classList.add('show');
+    return false;
+  } else {
+    banner.classList.remove('show');
+    banner.textContent = '';
+    return true;
+  }
+}
+
+function checkVictory() {
+  const sel = [...STATE.r4.selected];
+  const total = sel.reduce((s, id) => { const p=GAME_DATA.round4.find(x=>x.id===id); return s+(p?p.seats:0); }, 0);
+  if (total >= 121 && !STATE.r4.victory) {
+    STATE.r4.victory = true;
+    STATE.teams.forEach(t => t.scores.r4 += 25);
+    spawnConfetti();
+    document.getElementById('victory-pts-msg').textContent = '+25 points awarded to all teams!';
+    document.getElementById('victory-overlay').classList.add('show');
+  }
+}
+
+function resetR4() {
+  STATE.r4.selected.clear();
+  STATE.r4.victory = false;
+  document.querySelectorAll('.r4-party').forEach(el => el.classList.remove('selected'));
+  updateR4Counter();
+  checkVetoes();
+  goTo('screen-r4-play');
+}
+
+// ════════════════════════════════════════════
+//  CONFETTI
+// ════════════════════════════════════════════
+function spawnConfetti() {
+  const colors = ['#C9973A','#E8B954','#2ECC71','#3498DB','#FFFFFF','#E74C3C','#9B59B6'];
+  for (let i = 0; i < 90; i++) {
+    const el = document.createElement('div');
+    el.className = 'confetti-piece';
+    el.style.cssText = `left:${Math.random()*100}vw;background:${colors[Math.floor(Math.random()*colors.length)]};width:${7+Math.random()*8}px;height:${7+Math.random()*8}px;animation-duration:${2+Math.random()*2.5}s;animation-delay:${Math.random()*.9}s;transform:rotate(${Math.random()*360}deg);`;
+    document.body.appendChild(el);
+    el.addEventListener('animationend', () => el.remove());
+  }
+}
+
+// ════════════════════════════════════════════
+//  SCOREBOARD
+// ════════════════════════════════════════════
+function openScoreboard() {
+  renderScoreboard();
+  document.getElementById('scoreboard-overlay').classList.add('open');
+}
+function closeScoreboard() {
+  document.getElementById('scoreboard-overlay').classList.remove('open');
+}
+function renderScoreboard() {
+  const rounds = ['r1','r2','r3','r4'];
+  document.getElementById('sb-tbody').innerHTML = STATE.teams.map((t, ti) => {
+    const total = rounds.reduce((s,r) => s+t.scores[r], 0) + t.scores.bonus;
+    const cells = rounds.map(r => `<td class="editable" onclick="editScore(${ti},'${r}',this)">${t.scores[r]}</td>`).join('');
+    return `<tr><td>${t.name}</td>${cells}<td class="editable" onclick="editScore(${ti},'bonus',this)">${t.scores.bonus}</td><td class="total">${total}</td></tr>`;
+  }).join('');
+}
+function editScore(teamIdx, round, cell) {
+  if (cell.querySelector('input')) return;
+  const cur = STATE.teams[teamIdx].scores[round];
+  cell.innerHTML = `<input class="score-input" type="number" value="${cur}" min="0">`;
+  const input = cell.querySelector('input');
+  input.focus(); input.select();
+  const save = () => { STATE.teams[teamIdx].scores[round] = parseInt(input.value)||0; renderScoreboard(); };
+  input.addEventListener('blur', save);
+  input.addEventListener('keydown', e => { if(e.key==='Enter') save(); });
+}
+
+// ════════════════════════════════════════════
+//  INIT
+// ════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  buildGDPChart();
+  buildR3Grid();
+  buildR4Grid();
+});
+</script>
+</body>
+</html>
